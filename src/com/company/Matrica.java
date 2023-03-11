@@ -45,13 +45,13 @@ public class Matrica implements Cloneable {
         return this.mat[i];
     }
 
-//    public int[] dohvatiKolonu(int br) {
-//        int[] kolona = new int[n];
-//        for(int i = 0; i < kolona.length; i++) {
-//            kolona[i] = this.mat[br][i];
-//        }
-//        return kolona;
-//    }
+    public int[] dohvatiKolonu(int br) {
+        int[] kolona = new int[m];
+        for(int i = 0; i < kolona.length; i++) {
+            kolona[i] = this.mat[i][br];
+        }
+        return kolona;
+    }
 
     public int[][] saberi(Matrica matrica) throws Greska {
         int[][] rezultat = new int[this.m][this.n];
@@ -111,18 +111,22 @@ public class Matrica implements Cloneable {
     }
 
     public Matrica konkurentniProizvod(Matrica a, Matrica b) {
-        Matrica c = new Matrica(this);
-        KlasaMnozenja[] niti = new KlasaMnozenja[m];
+        Matrica c = new Matrica(a.m, b.n);
+        KlasaMnozenja[][] niti = new KlasaMnozenja[a.m][b.n];
         for(int i = 0; i < niti.length; i++) {
-            niti[i] = new KlasaMnozenja(a, b, i);
-        }
-        for (int i = 0; i < niti.length; i++) {
-            try {
-                niti[i].join();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            for(int j = 0; j < niti[i].length; j++) {
+                niti[i][j] = new KlasaMnozenja(a, b, i, j);
             }
-            c.mat[i] = niti[i].getRezultat();
+        }
+        for(int i = 0; i < niti.length; i++) {
+            for(int j = 0; j < niti[i].length; j++) {
+                try {
+                    niti[i][j].join();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                c.mat[i][j] = niti[i][j].getRezultat();
+            }
         }
         return c;
     }
