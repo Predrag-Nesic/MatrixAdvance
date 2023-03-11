@@ -41,9 +41,9 @@ public class Main {
         Matrica f = Matrica.pomnozi(d, e);
         System.out.println(f);
 
-//        System.out.println("Konkurentni proizvod:");
-//        Matrica g = new Matrica(2, 2);
-//        System.out.println(g.konkurentniProizvod(d, e));
+
+        Matrica g = e.konkurentniProizvod(d, e);
+        System.out.println(g);
 
     }
 }
